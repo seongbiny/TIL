@@ -33,6 +33,20 @@
     git revert "버전 id"
     ```
 
+* git branch 생성
+
+  * ``` 
+    git branch 브랜치이름
+    ```
+
+* git branch 전환
+
+  * ```
+    git checkout 브랜치이름
+    ```
+
+    전환하면 마지막 커밋상태로 바뀐다.
+
 
 
 
