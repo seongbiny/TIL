@@ -26,7 +26,7 @@
 
 
 
-**[출처]** https://blog.naver.com/with_msip/222339816710)|**작성자** [과학기술정보통신부](https://blog.naver.com/with_msip)
+**[출처]** https://blog.naver.com/with_msip/222339816710 **작성자** [과학기술정보통신부](https://blog.naver.com/with_msip)
 
 
 
