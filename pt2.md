@@ -6,7 +6,7 @@
 
 생활공간, 문화공간으롱 무한히 확장하는 멀티버스
 
-<src img='https://postfiles.pstatic.net/MjAyMTA2MDNfMTQg/MDAxNjIyNjk0NTEwNjEy.6yGvE1Y8Mc2WIEMKCacOGR17lyLX5bpvgu0jrZ-ojNEg.c_RYz2PW3WdU_sOKYKLzZZYSifhcfCdTrY5S3fMaC7sg.JPEG.with_msip/0603_%EB%A9%94%ED%83%80%EB%B2%84%EC%8A%A4.jpg?type=w966'>
+<img src="https://postfiles.pstatic.net/MjAyMTA2MDNfMTQg/MDAxNjIyNjk0NTEwNjEy.6yGvE1Y8Mc2WIEMKCacOGR17lyLX5bpvgu0jrZ-ojNEg.c_RYz2PW3WdU_sOKYKLzZZYSifhcfCdTrY5S3fMaC7sg.JPEG.with_msip/0603_%EB%A9%94%ED%83%80%EB%B2%84%EC%8A%A4.jpg?type=w966">
 
 
 
