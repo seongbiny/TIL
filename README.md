@@ -8,3 +8,6 @@
 
 * web crawling vs API
 * telegram chat bot 만들기
+
+> 21.07.19 ~ 21.07.30 Python
+
