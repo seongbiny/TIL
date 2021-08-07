@@ -14,4 +14,9 @@
 * python 문법
 * web crawling , API
 
-> 21.08.02 ~
+> 21.08.02 ~ 21.08.06 HTML/CSS
+
+* bootstrap
+* 반응형 웹
+
+> 21.08.09 ~
