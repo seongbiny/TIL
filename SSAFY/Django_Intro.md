@@ -208,3 +208,124 @@ $ python manage.py startapp articles
 
 ----------------------------
 
+### HTML Form
+
+#### HTML "form" element
+
+* 웹에서 사용자 정보를 입력하는 여러 방식(text, button, checkbox, file, hidden, image, password, radio, reset, submit)을 제공하고, 사용자로부터 할당된 데이터를 서버로 전송하는 역할을 담당
+* 핵심 속성(attribute)
+  * **action** : 입력 데이터가 전송될 URL 지정
+  * **method** : 입력 데이터 전달 방식 지정
+
+#### HTML "input" element
+
+* 사용자로부터 데이터를 입력 받기 위해 사용
+* type 속성에 따라 동작 방식이 달라짐
+* 핵심 속성(attribute)
+  * **name**
+  * 중복 가능, 양식을 제출했을 때 name이라는 이름에 설정된 값을 넘겨서 값을 가져올 수 있음
+  * 주요 용도는 GET/POST 방식으로 서버에 전달하는 파라미터(neme은 key, value는 value)로 **?key=value&key=value** 형태로 전달됨
+
+#### HTML "label" element
+
+* 사용자 인터페이스 항목에 대한 설명(caption)을 나타냄
+* label을 input 요소와 연결하기
+  1.  input에 id 속성 부여
+  2.  label에는 input의 id와 동일한 값의 for 속성이 필요
+* label과 input 요소 연결의 주요 이점
+  * 시각적인 기능 뿐만 아니라 화면 리더기에서 label을 읽어서 사용자가 입력해야 하는 텍스트가 무엇인지 더 쉽게 이해할 수 있도록 돕는 프로그래밍적 이점도 있음
+  * label을 클릭해서 input에 초점을 맞추거나 활성화 시킬 수 있음
+
+#### HTML "for" attribute
+
+* for 속성의 값과 일치하는 id를 가진 문서의 첫 번째 요소를 제어
+  * 연결 된 요소가 labelable elements인 경우 이 요소에 대한 labeled control이 됨
+* "labelable elements"
+  * label 요소와 연결할 수 있는 요소
+  * button, input, select, textarea ...
+
+#### HTML "id" attribute
+
+* 전체 문서에서 고유(must unique)해야 하는 식별자를 정의
+* 사용 목적
+  * linking, scripting, styling 시 요소를 식별
+
+#### HTTP
+
+* Hypertext trasfer protocol
+* 웹에서 이루어지는 모든 데이터 교환의 기초
+* 주어진 리소스가 수행 할 원하는 작업을 나타내는 request methods를 정의
+* HTTP request method 종류
+  * GET, POST, PUT, DELETE ...
+
+#### HTTP request method = "GET"
+
+* 서버로부터 **정보를 조회**하는 데 사용
+* 데이터를 가져올 때만 사용해야 함
+* 데이터를 서버로 전송할 때 body가 아닌 Query String Parameters를 통해 전송
+* 우리는 서버에 요청을 하면 HTML 문서 파일 한 장을 받는데, 이때 사용하는 요청의 방식이 GET
+
+-----------------------------------------------
+
+### URL
+
+#### Variable Routing
+
+* URL 주소를 변수로 사용하는 것
+* URL의 일부를 변수로 지정하여 view 함수의 인자로 넘길 수 있음
+* 변수 값에 따라 하나의 path()에 여러 페이지를 연결 시킬 수 있음
+
+#### App URL mapping
+
+* app의 view 함수가 많아지면서 사용하는 path() 또한 많아지고, app 또한 더 많이 작성되기 때문에 프로젝트의 urls.py에서 모두 관리하는 것은 프로젝트 유지보수에 좋지 않음
+* 이제는 **각 app에 urls.py를 작성** 하게 됨
+
+![image-20210902132852404](md-images/image-20210902132852404.png)
+
+* urlpattern은 언제든지 다른 URLconf 모듈을 포함(include)할 수 있음
+
+#### Including other URLconfs
+
+* **include()**
+  * 다른 URLconf(app1/urls.py)들을 참조할 수 있도록 도움
+  * 함수 include()를 만나게 되면, URL의 그 시점까지 일치하는 부분을 잘라내고, 남은 문자열 부분을 후속 처리하기 위해 include된 URLconf로 전달
+  * **django는 명시적 상대경로 (from .module import ..)를 권장**
+
+#### Naming URL patterns
+
+* 이제는 링크에 url을 직접 작성하는 것이 아니라 path() 함수의 name 인자를 정의해서 사용
+* Django Template Tag 중 하나인 url 태그를 사용해서 path() 함수에 작성한 name을 사용할 수 있음 
+* url 설정에 정의된 특정한 경로들의 의존성을 제거할 수 있음
+
+![image-20210902133335391](md-images/image-20210902133335391.png)
+
+![image-20210902133427659](md-images/image-20210902133427659.png)
+
+* the 'name' value as called by the **{% url %}** template tag
+
+----------------------------------
+
+### namespace 
+
+* namespace는 객체를 구분할 수 있는 범위를 나타내는 말로 일반적으로 하나의 이름 공간에서는 하나의 이름이 단 하나의 객체만을 가리키게 된다.
+* 프로그래밍을 하다 보면 모든 변수명과 함수명등을 겹치지 않게 정의하는 것은 매우 어려운 일이다.
+* 그래서 django에서는
+  1.  서로 다른 app의 같은 이름을 가진 url name은 이름공간을 설정해서 구분
+  2. templates, static 등 django는 정해진 경로 하나로 모아서 보기 때문에 중간에 폴더를 임의로 만들어 줌으로써 이름공간을 설정
+
+#### URL namespace
+
+* URL namespace를 사용하면 서로 다른 앱에서 동일한 URL 이름을 사용하는 경우에도 이름이 지정된 URL을 고유하게 사용할 수 있음
+* urls.py에 **"app_name"** attribute 값 작성
+
+![image-20210902134226762](md-images/image-20210902134226762.png)
+
+#### Template namespace
+
+* Django는 기본적으로 **app_name/templates/** 경로에 있는 templates 파일들만 찾을 수 있으며, INSTALLED_APPS에 작성한 app 순서로 template을 검색 후 랜더링 함
+* 그래서 임의로 templates의 폴더 구조를 **app_name/templates/app_name** 형태로 변경해 임의로 이름 공간을 생성 후 변경된 추가 경로로 수정
+
+![image-20210902134601088](md-images/image-20210902134601088.png)
+
+![image-20210902134702735](md-images/image-20210902134702735.png)
+

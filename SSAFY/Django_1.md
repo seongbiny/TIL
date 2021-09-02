@@ -1,5 +1,17 @@
 # Django
 
+* 목차
+
+1. Web Framework
+2. Django Intro
+3. 요청과 응답
+4. Template
+5. HTML Form
+6. URL
+7. Namespace
+
+----------------------------------
+
 #### Static web page (정적 웹 페이지)
 
 * 서버에 미리 저장된 파일이 사용자에게 그대로 전달되는 웹 페이지
