@@ -102,17 +102,13 @@ INSTALLED_APPS = [
 
 ----------------------------------------
 
-### 요청과 응답
+### MTV 디자인 패턴
 
-#### URLS
+#### model
 
-![image-20210901234705174](C:/Users/seongbiny/AppData/Roaming/Typora/typora-user-images/image-20210901234705174.png)
-
-* HTTP 요청을 알맞은 view로 전달
+* 응용프로그램의 데이터 구조를 정의하고 데이터베이스의 기록을 관리(추가, 수정, 삭제)
 
 #### View
-
-![image-20210901234851426](C:/Users/seongbiny/AppData/Roaming/Typora/typora-user-images/image-20210901234851426.png)
 
 * HTTP 요청을 수신하고 HTTP 응답을 반환하는 함수 작성
 * Model을 통해 요청에 맞는 필요 데이터에 접근
@@ -124,16 +120,33 @@ INSTALLED_APPS = [
 * 파일의 구조나 레이아웃을 정의
 * Template 파일 경로의 기본 값은 **app 폴더 안의 templates 폴더**로 지정되어 있음
 
-#### 추가 설정
+**.py 3대장 기억하기**
 
-![image-20210901235241542](C:/Users/seongbiny/AppData/Roaming/Typora/typora-user-images/image-20210901235241542.png)
-
-* LANGUAGE_CODE
-  * 모든 사용자에게 제공되는 번역을 결정
-* TIME_ZONE
-  * 데이터베이스 연결의 시간대를 나타내는 문자열 지정
+* `urls.py` : 주소(URL) 관리
+* `views.py` : 페이지 관리 (페이지 하나 당, 하나의 함수)
+* `models.py` : 데이터베이스 관리
 
 ---------------------------------
+
+#### 요청과 응답
+
+**urls.py**
+
+* 장고 서버로 요청(request)이 들어오면 그 요청이 어디로 가야하는지 인식하고 관련된 함수(view)로 넘겨준다.
+* `views.py` 에서 만든 함수를 연결시켜준다.
+
+**views.py**
+
+* HTTP 요청을 수신하고 HTTP 응답을 반환하는 함수 작성
+* Model을 통해 요청에 맞는 필요 데이터에 접근
+* templates에게 HTTP 응답 서식을 맡김
+
+**Templates**
+
+* `views.py`에서 지정한 `intex.html` 파일을 만든다.
+* Django에 설정된 template의 기본 경로는 **app 폴더 안의 templates 폴더**이다.
+
+----
 
 ### Template
 
@@ -200,6 +213,18 @@ INSTALLED_APPS = [
 
 * 템플릿 상속은 기본적으로 코드의 재사용성에 초점을 맞춤
 * 템플릿 상속을 사용하면 사이트의 모든 공통 요소를 포함하고, 하위 템플릿이 재정의(override) 할 수 있는 블록을 정의하는 기본 "skeleton" 템플릿을 만들 수 있음
+  * `app_name/templates` 기본경로 외 추가 경로 설정하기
+
+```django
+# settings.py
+
+TEMPLATES = [
+    {
+        ...,
+        'DIRS': [BASE_DIR / 'templates'],  
+...
+]
+```
 
 > Template inheritance = "tags"
 
@@ -220,6 +245,59 @@ INSTALLED_APPS = [
 ----------------------------
 
 ### HTML Form
+
+#### throw & catch
+
+* throw
+
+```django
+# first_project/urls.py
+
+path('throw/', views.throw),
+```
+
+```django
+# articles/views.py
+
+def throw(request):
+	return render(request, 'throw.html')
+```
+
+```django
+# articles/tmplates/throw.html
+
+<form action="/catch" method="GET">
+    <label for="message">Throw</label>
+    <input type="text" id="message" name="message">
+    <input type="submit">
+</form>
+```
+
+* catch
+
+```django
+# first_project/urls.py
+
+path('catch/', views.catch),
+```
+
+```django
+# articles/views.py
+
+def catch(request):
+	message = request.GET.get('message')
+	context = {
+		'message': message,
+	}
+	return render(request, 'catch.html', context)
+```
+
+```django
+# articles/templates/catch.html
+
+<h1>내가 받은 메세지는 {{ message }}야!</h1>
+<a href="/throw/">뒤로</a>
+```
 
 #### HTML "form" element
 
@@ -283,10 +361,13 @@ INSTALLED_APPS = [
 #### Variable Routing
 
 * URL 주소를 변수로 사용하는 것
+* 동적 라우팅
 * URL의 일부를 변수로 지정하여 view 함수의 인자로 넘길 수 있음
 * 변수 값에 따라 하나의 path()에 여러 페이지를 연결 시킬 수 있음
 
 #### App URL mapping
+
+> 하나의 프로젝트의 여러 앱이 존재한다면, 각각의 앱 안에 urls.py을 만들고 프로젝트 urls.py에서 각 앱의 urls.py 파일로 URL 매핑을 위탁하게 가능
 
 * app의 view 함수가 많아지면서 사용하는 path() 또한 많아지고, app 또한 더 많이 작성되기 때문에 프로젝트의 urls.py에서 모두 관리하는 것은 프로젝트 유지보수에 좋지 않음
 * 이제는 **각 app에 urls.py를 작성** 하게 됨
@@ -318,25 +399,121 @@ INSTALLED_APPS = [
 
 ### namespace 
 
-* namespace는 객체를 구분할 수 있는 범위를 나타내는 말로 일반적으로 하나의 이름 공간에서는 하나의 이름이 단 하나의 객체만을 가리키게 된다.
-* 프로그래밍을 하다 보면 모든 변수명과 함수명등을 겹치지 않게 정의하는 것은 매우 어려운 일이다.
-* 그래서 django에서는
-  1.  서로 다른 app의 같은 이름을 가진 url name은 이름공간을 설정해서 구분
-  2. templates, static 등 django는 정해진 경로 하나로 모아서 보기 때문에 중간에 폴더를 임의로 만들어 줌으로써 이름공간을 설정
+> 개체를 구분할 수 있는 범위를 나타내는 namespace
+
+**두번째 app의 index 페이지 작성**
+
+```djan
+# pages/urls.py
+
+from django.urls import path
+from . import views 
+
+
+urlpatterns = [
+    path('index/', views.index, name='index'),
+]
+```
+
+```django
+# pages/views.py
+
+def index(request):
+    return render(request, 'index.html')
+```
+
+```django
+<!-- pages/templates/index.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>두번째 앱의 index</h1>
+{% endblock %}
+```
+
+```django
+<!-- articles/templates/index.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>만나서 반가워요!</h1>
+  <a href="{% url 'greeting' %}">greeting</a>
+  <a href="{% url 'dinner' %}">dinner</a>
+  <a href="{% url 'dtl_practice' %}">dtl-practice</a>
+  <a href="{% url 'throw' %}">throw</a>
+
+  <h2><a href="{% url 'index' %}">두번째 앱 index로 이동</a></h2>
+{% endblock %}
+
+```
+
+**2가지 문제 발생**
+
+1. articles app index 페이지에서 두번째 앱 index로 이동 하이퍼 링크를 클릭 시 현재 페이지로 이동
+   * URL namespace
+2. pages app index url로 이동해도 articles app의 index 페이지가 출력됨
+   * Template namespace
 
 #### URL namespace
 
 * URL namespace를 사용하면 서로 다른 앱에서 동일한 URL 이름을 사용하는 경우에도 이름이 지정된 URL을 고유하게 사용할 수 있음
 * urls.py에 **"app_name"** attribute 값 작성
 
-![image-20210902134226762](md-images/image-20210902134226762.png)
+```django
+# pages/urls.py
+
+app_name = 'pages'
+urlpatterns = [
+    path('index/', views.index, name='index'),
+]
+```
+
+```django
+# articles/urls.py
+
+app_name = 'articles'
+urlpatterns = [
+    ...,
+]
+```
+
+**URL tag 변경**
+
+```django
+<!-- articles/templates/index.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>만나서 반가워요!</h1>
+  <a href="{% url 'articles:greeting' %}">greeting</a>
+  <a href="{% url 'articles:dinner' %}">dinner</a>
+  <a href="{% url 'articles:throw' %}">throw</a>
+
+  <h2><a href="{% url 'pages:index' %}">두번째 앱 index로 이동</a></h2>
+{% endblock %}
+```
+
+
 
 #### Template namespace
 
 * Django는 기본적으로 **app_name/templates/** 경로에 있는 templates 파일들만 찾을 수 있으며, INSTALLED_APPS에 작성한 app 순서로 template을 검색 후 랜더링 함
 * 그래서 임의로 templates의 폴더 구조를 **app_name/templates/app_name** 형태로 변경해 임의로 이름 공간을 생성 후 변경된 추가 경로로 수정
 
-![image-20210902134601088](md-images/image-20210902134601088.png)
+```django
+# articles/views.py
+
+return render(request, 'articles/index.html')
+```
+
+```django
+# pages/views.py
+
+return render(request, 'pages/index.html')
+```
 
 ![image-20210902134702735](md-images/image-20210902134702735.png)
 
