@@ -4,90 +4,101 @@
 
 * Django 설치 전 **가상환경 생성 및 활성화**
 
-![image-20210901232950960](C:/Users/seongbiny/AppData/Roaming/Typora/typora-user-images/image-20210901232950960.png)
+```python
+$ pip install django # 설치
+$ pip list # 설치 확인
+```
 
 * 메인 페이지 로켓 확인
 
-> 프로젝트 구조
+> 프로젝트 생성 및 구조
 
-![image-20210901233321061](C:/Users/seongbiny/AppData/Roaming/Typora/typora-user-images/image-20210901233321061.png)
+```python
+$ django-admin startproject first_project 
+# first_project라는 이름이 프로젝트 생성
+$ python manage.py runserver # 서버 실행
+```
 
-* \_\_init\_\_.py
+* `__init__.py`
 
   * python에게 이 디렉토리를 하나의 python 패키지로 다루도록 지시
 
-* asgi.py
+* `asgi.py`
 
   * asynchronous server gateway interface
   * django 애플리케이션이 비동기식 웹 서버와 연결 및 소통하는 것을 도움
 
-* settings.py
+* `settings.py`
 
-  * 애플리케이션의 모든 설정을 포함
+  * 웹사이트의 모든 설정을 포함
 
-* urls.py
+* `urls.py`
 
   * 사이트의 url과 적절한 views의 연결을 지정
 
-* wsgi.py
+* `wsgi.py`
 
   * web server gateway interface
   * django 애플리케이션이 웹서버와 연결 및 소통하는 것을 도움
 
-* manage.py
+* `manage.py`
 
   * django 프로젝트와 다양한 방법으로 상호작용 하는 커맨드라인 유틸리티
 
-  * ```
+  * ```python
     $ python manage.py <command> [options]
     ```
 
-> Application 생성
+> Application 생성 및 구조
 
-* **복수형** 으로 하는 것을 권장
-
-```
+```python
 $ python manage.py startapp articles
 ```
 
-> Application 구조
+**Application (app)**
 
-![image-20210901234041804](C:/Users/seongbiny/AppData/Roaming/Typora/typora-user-images/image-20210901234041804.png)
+* 프로젝트는 app의 집합이고, 실제 요청을 처리하고 페이지를 보여주고 하는 것들은 이 app의 역할
+* **복수형** 으로 하는 것을 권장
 
-* admin.py
+**Application 구조**
+
+* `admin.py`
   * 관리자용 페이지를 설정 하는 곳
-* apps.py
+
+* `apps.py`
   * 앱의 정보가 작성된 곳
-* models.py
-  * 앱에서 사용하는 model을 정의하는 곳
-* tests.py
+* `models.py`
+  * 앱에서 사용하는 model(DB)을 정의하는 곳
+* `tests.py`
   * 프로젝트의 테스트 코드를 작성하는 곳
-* views.py
+* `views.py`
   * view 함수들이 정의 되는 곳
 
-#### Project & Application
+#### Application 등록
 
-* Project
-  * 프로젝트는 앱의 집합
-  * 프로젝트에는 여러 앱이 포함될 수 있음
-  * 앱은 여러 프로젝트에 있을 수 있음
-* Application
-  * 앱은 실제 요청을 처리하고 페이지를 보여주고 하는 등의 역할을 담당
-  * 하나의 프로젝트는 여러 앱을 가짐
-  * 일반적으로 앱은 하나의 역할 및 기능 단위로 작성함
+> 반드시 **app 생성 후 등록** 순서를 지켜야한다.
 
-#### 앱 등록
+```django
+INSTALLED_APPS = [
+    # local apps
+    'movies',
 
-![image-20210901234347677](C:/Users/seongbiny/AppData/Roaming/Typora/typora-user-images/image-20210901234347677.png)
+    # 3rd party apps
+    'django_extensions',
+    
+    # django apps
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+```
 
 * 프로젝트에서 앱을 사용하기 위해서는 반드시 INSTALLED_APPS 리스트에 추가해야 함
 * **INSTALLED_APPS**
   * Django installation에 활성화 된 모든 앱을 지정하는 문자열 목록
-
-> 앱 생성 시 주의 사항
-
-* **"반드시 생성 후 등록 !"**
-* INSTALLED_APPS에 먼저 작성(등록)하고 생성하려면 앱이 생성되지 않음
 
 ----------------------------------------
 
