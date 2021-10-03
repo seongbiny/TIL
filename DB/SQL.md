@@ -157,5 +157,52 @@ SELECT DISTINCT 컬럼 FROM 테이블이름;
 
 ### DELETE
 
+#### DELETE
 
+```sqlite
+DELETE FROM 테이블이름 WHERE 조건;
+```
 
+**조건을 통해 특정 레코드 삭제하기**
+
+-> 어떤 기준으로 데이터를 삭제하면 좋을까?
+
+-> **중복 불가능한 값인 rowid를 기준으로 삭제하자!**
+
+**SQLite는 기본적으로 id를 **재사용
+
+#### AUTOINCREMENT
+
+* SQLite가 사용되지 않은 값이나 이전에 삭제된 행의 값을 재사용하는 것을 방지
+
+```sqlite
+CREATE TABLE 테이블이름 (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+...
+);
+```
+
+**테이블을 생성하는 단계에서** **AUTOINCREMENT**를 통해 설정가능
+
+### UPDATE
+
+#### UPDATE
+
+```sqlite
+UPDATE 테이블이름 SET 컬럼1=값1, 컬럼2=값2, ... WHERE 조건;
+```
+
+**조건을 통해 특정 레코드 수정하기**
+
+**중복 불가능한 값인 rowid를 기준으로 수정하자!**
+
+### CRUD 정리하기
+
+|      | 구문   | 예시                                                         |
+| ---- | ------ | ------------------------------------------------------------ |
+| C    | INSERT | **INSERT INTO** 테이블이름 (컬럼1, 컬럼2, ...) **VALUES** (값1, 값2); |
+| R    | SELECT | **SELECT * FROM** 테이블이름 **WHERE** 조건;                 |
+| U    | UPDATE | **UPDATE** 테이블이름 **SET** 컬럼1=값1, 컬럼2=값2 **WHERE** 조건; |
+| D    | DELETE | **DELETE FROM** 테이블이름 **WHERE** 조건;                   |
+
+97
