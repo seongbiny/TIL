@@ -205,4 +205,128 @@ UPDATE 테이블이름 SET 컬럼1=값1, 컬럼2=값2, ... WHERE 조건;
 | U    | UPDATE | **UPDATE** 테이블이름 **SET** 컬럼1=값1, 컬럼2=값2 **WHERE** 조건; |
 | D    | DELETE | **DELETE FROM** 테이블이름 **WHERE** 조건;                   |
 
-97
+### WHERE
+
+#### Table users 생성
+
+```sqlite
+CREATE TABLE users (
+first_name TEXT NOT NULL,
+last_name TEXT NOT NULL,
+age INTEGER NOT NULL,
+country TEXT NOT NULL,
+phone TEXT NOT NULL,
+balance INTEGER NOT NULL
+);
+```
+
+#### csv파일 정보를 테이블에 적용하기
+
+![image-20211004135848076](md-images/image-20211004135848076.png)
+
+```sqlite
+SELECT * FROM 테이블이름 WHERE 조건;
+```
+
+### sqlite Aggregate Functions
+
+* COUNT
+  * 그룹의 항목 수를 가져옴
+* AVG
+  * 값 집합의 평균 값을 계산
+* MAX
+  * 그룹에 있는 모든 값의 최대값을 가져옴
+* MIN
+  * 그룹에 있는 모든 값의 최소값을 가져옴
+* SUM
+  * 모든 값의 합을 계산
+
+#### COUNT
+
+```sqlite
+SELETE COUNT(컬럼) FROM 테이블이름;
+```
+
+**레코드의 개수 조회하기**
+
+#### AVG, SUM, MIN, MAX
+
+```SQLITE
+SELECT AVG(컬럼) FROM 테이블이름;
+SELECT SUM(컬럼) FROM 테이블이름;
+SELECT MIN(컬럼) FROM 테이블이름;
+SELECT MAX(컬럼) FROM 테이블이름;
+```
+
+**위 함수들은 기본적으로 해당 컬럼이 숫자(INTEGER)일 때만 사용 가능**
+
+### LIKE
+
+* 패턴 일치를 기반으로 데이터를 조회하는 방법
+* sqlite는 패턴 구성을 위한 2개의 wildcards를 제공
+  * % (percent sign)
+    * 0개 이상의 문자
+  * _ (underscore)
+    * 임의의 단일 문자
+
+```sqlite
+SELECT * FROM 테이블 WHERE 컬럼 LIKE '와일드카드패턴';
+```
+
+**패턴을 확인하여 해당하는 값을 조회하기**
+
+#### wildcards
+
+![image-20211004142705117](md-images/image-20211004142705117.png)
+
+| 와일드카드패턴 | 의미                                          |
+| -------------- | --------------------------------------------- |
+| 2%             | 2로 시작하는 값                               |
+| %2             | 2로 끝나는 값                                 |
+| %2%            | 2가 들어가는 값                               |
+| _2%            | 아무 값이 하나 있고 두번 째가 2로 시작하는 값 |
+| 1___           | 1로 시작하고 총 4자리인 값                    |
+| 2_%\_% / 2__%  | 2로 시작하고 적어도 3자리인 값                |
+
+### ORDER BY
+
+* 조회 결과 집합을 정렬
+* SELECT 문에 추가하여 사용
+* 정렬 순서를 위한 2개의 keyword 제공
+  * ASC - 오름차순 (default)
+  * DESC - 내림차순
+
+```sqlite
+SELECT * FROM 테이블 ORDER BY 컬럼 ASC;
+SELECT * FROM 테이블 ORDER BY 컬럼1, 컬럼2 DESC;
+```
+
+**특정 컬럼을 기준으로 데이터를 정렬해서 조회하기**
+
+### GROUP BY
+
+* 행 집합에서 요약 행 집합을 만듦
+* SELECT 문의 optional 절
+* 선택된 행 그룹을 하나 이상의 열 값으로 요약 행으로 만듦
+* 문장에 WHERE 절이 포함된 경우 반드시 WHERE 절 뒤에 작성해야 함
+
+![image-20211004145143576](md-images/image-20211004145143576.png)
+
+**지정된 기준에 따라 행 세트를 그룹으로 결합 데이터를 요약하는 상황에 주로 사용**
+
+![image-20211004145247498](md-images/image-20211004145247498.png)
+
+### ALTER TABLE
+
+ALTER TABLE의 3가지 기능
+
+1. table 이름 변경
+2. 테이블에 새로운 column 추가
+3. [참고] column 이름 수정
+
+**테이블의 이름을 변경해보자**
+
+```sqlite
+ALTER TABLE 기존테이블이름 RENAME TO 새로운테이블이름;
+```
+
