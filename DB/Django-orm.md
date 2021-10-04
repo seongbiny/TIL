@@ -129,42 +129,30 @@ SELECT * FROM users_user WHERE id=102;
 
 ### DELETE
 
-#### 특정 user 레코드 삭제 - ORM
+#### 특정 user 레코드 삭제 - ORM, SQL
 
-```shell
+```sqlite
 User.objects.get(pk=102).delete()
-```
 
-#### 특정 user 레코드 삭제 - SQL
-
-```sql
 DELETE FROM users_user WHERE id=101;
 SELECT * FROM users_user WHERE id=101;
 ```
 
 ### SQL & ORM 활용하기
 
-#### 전체 유저의 수를 조회 - ORM
-
-```shell
-User.objects.count()
-```
-
-#### 전체 유저의 수를 조회 - SQL
+#### 전체 유저의 수를 조회 - ORM, SQL
 
 ```sql
+User.objects.count()
+
 SELECT COUNT(*) FROM users_user;
 ```
 
-#### 나이가 30살인 사람들의 이름 - ORM
-
-```shell
-User.objects.filter(age=30).values('first_name')
-```
-
-#### 나이가 30살인 사람들의 이름 - SQL
+#### 나이가 30살인 사람들의 이름 - ORM, SQL
 
 ```sql
+User.objects.filter(age=30).values('first_name')
+
 SELECT first_name FROM users_user WHERE age=30;
 ```
 
@@ -172,40 +160,28 @@ SELECT first_name FROM users_user WHERE age=30;
 
 **__gte, \_\_gt, \_\_lte, \_\_lt**
 
-#### 나이가 30살 이상인 사람의 인원 수 - ORM
-
-```shell
-User.objects.filter(age__gte=30).count()
-```
-
-#### 나이가 30살 이상인 사람의 인원 수 - SQL
+#### 나이가 30살 이상인 사람의 인원 수 - ORM, SQL
 
 ```sql
+User.objects.filter(age__gte=30).count()
+
 SELECT COUNT(*) FROM users_user WHERE age>=30;
 ```
 
-#### 나이가 20살 이하인 사람의 인원 수 - ORM
-
-```shell
-User.objects.filter(age__lte=20).count()
-```
-
-#### 나이가 20살 이하인 사람의 인원 수 - SQL
+#### 나이가 20살 이하인 사람의 인원 수 - ORM, SQL
 
 ```sql
+User.objects.filter(age__lte=20).count()
+
 SELECT COUNT(*) FROM users_user WHERE age<=20;
 ```
 
-#### 나이가 30살이면서 성이 김씨인 사람의 인원 수 - ORM
-
-```shell
-User.objects.filter(age=30, last_name='김').count()
-User.objects.filter(age=30).filter(last_name='김').count()
-```
-
-#### 나이가 30살이면서 성이 김씨인 사람의 인원 수 - SQL
+#### 나이가 30살이면서 성이 김씨인 사람의 인원 수 - ORM, SQL
 
 ```sql
+User.objects.filter(age=30, last_name='김').count()
+User.objects.filter(age=30).filter(last_name='김').count()
+
 SELECT COUNT(*) FROM users_user WHERE age=30 AND last_name='김';
 ```
 
@@ -224,51 +200,35 @@ User.objects.filter(Q(age=30) | Q(last_name='김'))
 SELECT * FROM users_user WHERE age=30 OR last_name='김';
 ```
 
-#### 지역번호가 02인 사람의 인원 수 - ORM
-
-```shell
-User.objects.filter(phone__startswith='02-').count()
-```
-
-#### 지역번호가 02인 사람의 인원 수 - SQL
+#### 지역번호가 02인 사람의 인원 수 - ORM, SQL
 
 ```sql
+User.objects.filter(phone__startswith='02-').count()
+
 SELECT COUNT(*) FROM users_user WHERE phone LIKE '02-%';
 ```
 
-#### 주소가 강원도이면서 성이 황씨인 사람의 이름 - ORM
-
-```shell
-User.objects.filter(country='강원도', last_name='황').values('first_name')
-```
-
-#### 주소가 강원도이면서 성이 황씨인 사람의 이름 - SQL
+#### 주소가 강원도이면서 성이 황씨인 사람의 이름 - ORM, SQL
 
 ```sql
+User.objects.filter(country='강원도', last_name='황').values('first_name')
+
 SELECT first_name FROM users_user WHERE country='강원도' AND last_name='황';
 ```
 
-#### 나이가 많은 사람순으로 10명 - ORM
-
-```
-User.objects.order_by('-age')[:10]
-```
-
-#### 나이가 많은 사람순으로 10명 - SQL
+#### 나이가 많은 사람순으로 10명 - ORM, SQL
 
 ```sql
+User.objects.order_by('-age')[:10]
+
 SELECT * FROM users_user ORDER BY age DESC LIMIT 10;
 ```
 
-#### 잔액이 적은 사람순으로 10명 - ORM 
-
-```
-User.objects.order_by('balance')[:10]
-```
-
-#### 잔액이 적은 사람순으로 10명 - SQL
+#### 잔액이 적은 사람순으로 10명 - ORM, SQL
 
 ```SQL
+User.objects.order_by('balance')[:10]
+
 SELECT * FROM users_user ORDER BY balance ASC LIMIT 10;
 ```
 
@@ -276,6 +236,7 @@ SELECT * FROM users_user ORDER BY balance ASC LIMIT 10;
 
 ```sqlite
 User.objects.order_by('balance', '-age')[:10]
+
 SELECT * FROM users_user ORDER BY balance, age DESC LIMIT 10;
 ```
 
@@ -283,6 +244,7 @@ SELECT * FROM users_user ORDER BY balance, age DESC LIMIT 10;
 
 ```SQL
 User.objects.order_by('-last_name', '-first_name')[4]
+
 SELECT * FROM users_user ORDER BY last_name DESC, first_name DESC LIMIT 1 OFFSET 4;
 ```
 
