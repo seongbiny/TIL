@@ -330,3 +330,25 @@ ALTER TABLE의 3가지 기능
 ALTER TABLE 기존테이블이름 RENAME TO 새로운테이블이름;
 ```
 
+**테이블에 새로운 컬럼을 추가해보자**
+
+```sqlite
+ALTER TABLE 테이블이름 ADD COLUMN 컬럼이름 데이터타입설정;
+```
+
+**새로운 컬럼 이름은 created_at 이며, TEXT 타입에 NULL 설정!**
+
+```sqlite
+ALTER TABLE news ADD COLUMN created_at TEXT NOT NULL;
+```
+
+![image-20211004152048981](md-images/image-20211004152048981.png)
+
+#### 1. NOT NULL 설정 없이 추가하기
+
+![image-20211004152117350](md-images/image-20211004152117350.png)
+
+#### 2. 기본 값(DEFAULT) 설정하기
+
+![image-20211004152138009](md-images/image-20211004152138009.png)
+
