@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button>버튼</button>
+
+  <script>
+    // 1. My Custom Callback Function
+    const myFunc = function (func) {
+      return func
+    }
+
+    const myArgumentFunc = function () {
+      return 'Hello'
+    }
+
+    const result = myFunc(myArgumentFunc)
+    console.log(result())
+
+
+    // 2. map
+    const nums = [1, 2, 3]
+    // const doubleNums = nums.map(num => {
+    //   return num * 2
+    // })
+    const doubleNums = nums.map(function (num) {
+      return num * 2
+    })
+    console.log(doubleNums)
+
+
+    // 3. Array Helper Method (array 메서드 심화편)
+    const numbers = [1, 2, 3]
+    const newNumbers = []
+
+    numbers.forEach(num => {
+      newNumbers.push(num + 1)
+    })
+
+    console.log(newNumbers)
+
+
+    // 4. setTimeout
+    const helloWorld = function () {
+      console.log('happy coding!!')
+    }
+    setTimeout(helloWorld, 3000)
+    console.log('unhappy coding!!')
+
+    // 5. addEventListener
+    const myButton = document.querySelector('button')
+
+    myButton.addEventListener('click', function () {
+      console.log('button clicked!!!')
+    })
+  </script>
+</body>
+</html>

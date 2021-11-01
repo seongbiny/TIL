@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 1. setTimeout
+    const sleep = function () {
+      console.log('잘 잤다!!')
+    }
+
+    console.log('이제 자야지')
+    setTimeout(sleep, 3000)
+    console.log('학교 가자!!!')
+
+
+    // 2. XMLHttpRequest
+    const request = new XMLHttpRequest()
+    const URL = 'https://jsonplaceholder.typicode.com/todos/1/'
+
+    request.open('GET', URL)
+    request.send()
+
+    const todo = request.response
+    console.log(`data: ${todo}`)
+
+  </script>
+</body>
+</html>

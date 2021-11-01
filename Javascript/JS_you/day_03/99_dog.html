@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button>댕댕이</button>
+  <div class="dog-box">
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const URL = 'https://dog.ceo/api/breeds/image/random'
+    const myButton = document.querySelector('button')
+
+    // 버튼을 클릭하면, dog api로 요청을 보냄
+    myButton.addEventListener('click', function () {
+      axios.get(URL)
+        .then(response => {
+          // console.log(response.data)
+          return response.data
+        })
+        .then(response => {
+          // console.log(response.message)
+          const imgUrl = response.message
+          // img 태그 생성
+          const newImgTag = document.createElement('img')
+          // img 태그의 src 속성에 imgUrl 값 할당
+          newImgTag.src = imgUrl
+          // console.log(newImgTag)
+          // div 태그의 자식 태그로 완성된 img 태그를 삽입
+          const dogBox = document.querySelector('.dog-box')
+          dogBox.appendChild(newImgTag)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    })
+  </script>
+</body>
+</html>
