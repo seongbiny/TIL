@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ person.username }}님의 프로필</h1>
+
+{% with followings=person.followings.all followers=person.followers.all %}
+  <div>
+    <div id="follow-count">
+      팔로잉 : {{ followings|length }} / 팔로워 : {{ followers|length }}
+    </div>
+    {% if request.user != person %}
+      <div>
+        <form id="follow-form" data-user-id="{{ person.pk }}">
+          {% csrf_token %}
+          {% if request.user in followers %}
+            <button class="btn-primary">언팔로우</button>
+          {% else %}
+            <button class="btn-secondary">팔로우</button>
+          {% endif %}
+        </form>
+      </div>
+    {% endif %}
+  </div>
+{% endwith %}
+
+
+<hr>
+
+<h2>{{ person.username }}'s 게시글</h2>
+{% for article in person.article_set.all %}
+  <div>{{ article.title }}</div>
+{% endfor %}
+
+<hr>
+
+<h2>{{ person.username }}'s 댓글</h2>
+{% for comment in person.comment_set.all %}
+  <div>{{ comment.content }}</div>
+{% endfor %}
+
+<hr>
+
+<h2>{{ person.username }}'s likes</h2>
+{% for article in person.like_articles.all %}
+  <div>{{ article.title }}</div>
+{% endfor %}
+
+<hr>
+
+<a href="{% url 'articles:index' %}">[back]</a>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const form = document.querySelector('#follow-form') 
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  form.addEventListener('submit', function(event) {
+    event.preventDefault()
+    const userId = event.target.dataset.userId
+    //axios.get('http://127.0.0.1:8000/accounts/${userId}/follow/')
+    //console.log(event.target.dataset.userId)
+
+    axios({
+      method: 'post',
+      url: `/accounts/${userId}/follow/`,
+      headers: {'X-CSRFToken': csrftoken}
+    })
+    .then(response => {
+      //console.log(response)
+      const isFollowed = response.data.isFollowed
+      const followers_count = response.data.followers_count
+      const followings_count = response.data.followings_count
+      
+      const followBtn = document.querySelector('#follow-form > button')
+      followBtn.classList.toggle('btn-primary')
+      followBtn.classList.toggle('btn-secondary')
+      if (isFollowed) {
+        followBtn.innerText = '언팔로우'
+      }
+      else {
+        followBtn.innerText = '팔로우'
+      }
+      const followDiv = document.querySelector('#follow-count')
+      followDiv.innerText = `팔로잉 : ${followings_count} / 팔로워 : ${followers_count}`
+    })
+    
+  })
+</script>
+{% endblock %}
