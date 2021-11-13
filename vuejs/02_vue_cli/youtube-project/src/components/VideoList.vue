@@ -1,15 +1,20 @@
 <template>
   <ul>
-    <video-list-item></video-list-item>
+    <video-list-item
+      v-for="video in videos"
+      :key="video.id.videoId"
+      :video="video"
+      @select-video="onSelectVideo"
+    >
+    </video-list-item>
   </ul>
 </template>
 
 <script>
-import VideoListItem from '@/components/VideoListItem'
-
+import VideoListItem from "./VideoListItem";
 
 export default {
-  name: 'VideoList',
+  name: "VideoList",
   components: {
     VideoListItem,
   },
@@ -17,11 +22,14 @@ export default {
     videos: {
       type: Array,
       required: true,
-    }
-  }
-}
+    },
+  },
+  methods: {
+    onSelectVideo: function (video) {
+      this.$emit("select-video", video);
+    },
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
