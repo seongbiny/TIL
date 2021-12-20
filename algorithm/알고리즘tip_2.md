@@ -40,3 +40,11 @@ from itertools import permutations
 print(list(permutations(arr, M)))
 ```
 
+### 빈도 계산
+
+`Counter`
+
+```python
+from collections import Counter
+```
+
