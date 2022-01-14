@@ -1,63 +1,58 @@
-# webRTC
+# WebRTC
 
-webRTC(Web Real-Time Communication)는 웹 어플리케이션과 사이트가 중간자 없이 브라우저 간 오디오나 영상 미디어를 포착하고, 자유로운 스트림과 더불어 임의의 데이터 교환 기능도 제공한다. 주로 화상 컨퍼런스, 파일 공유, 화면 공유, 방송 등에 쓰인다. 
+| HTTP   | Fetch API  |
+| ------ | ---------- |
+| WebRTC | WebRTC API |
 
-**드라이버나 플러그인 설치 없이 웹 브라우저 간 P2P 연결을 통해 데이터 교환을 가능하게 하는 기술**이다.
+### WebRTC 4단계
 
-## 1) 참고자료
+1. Signaling
+2. Connecting
+3. Securing
+4. Communicating
 
-|           내용            |                           참고링크                           |
-| :-----------------------: | :----------------------------------------------------------: |
-|        WebRTC API         |   https://developer.mozilla.org/ko/docs/Web/API/WebRTC_API   |
-| WebRTC 실시간 데이터 교환 | https://wormwlrm.github.io/2021/01/24/Introducing-WebRTC.html |
-| WebRTC (STUN, TURN 서버)  |              https://andonekwon.tistory.com/59               |
+WebRTC는 RTCPeerConnection을 사용하여 브라우저간의 data streaming을 communicate. `signaling`이라고 불리는 메커니즘이 필요하다. => `Socket.io` 사용
 
-#### WebRTC가 실시간으로 웹에서 데이터를 교환할 수 있는 이유는 **시그널링이라고 일컫어지는 NAT 우회 과정을 거치기 때문이다.**
+WebRTC는 P2P로 작동한다. client application은 `NAT gateways`, 방화벽 등을 넘어야하고, 직접 접속(direct connection)이 끊어질 경우의 fallbacks도 필요하다.
 
-### P2P 절차
+WebRTC API는 STUN 서버를 사용하여 해당 컴퓨터의 ip 주소를 얻고, TURN 서버를 P2P 커뮤니케이션이 실패했을 경우의 relay server로 사용한다.
 
-WebRTC는 P2P 방식의 커뮤니케이션이기 때문에 각각의 웹 브라우저는 다음과 같은 절차를 밟아야 한다.
+### What you'll learn
 
-1. 각 브라우저가 P2P 커뮤니케이션에 동의
-2. 서로의 주소를 공유
-3. 보안 사항 및 방화벽 우회
-4. 멀티미디어 데이터를 실시간으로 교환
+* webcam을 통해 video 가져오기
+* `RTCPeerConnection`을 통해 video stream
+* `RTCDataChannel`을 통해 data stream
+* 메세지 교환을 위한 signaling service 세팅
+* peer connection과 signaling combine
+* 사진을 찍고 data channel을 통해 이를 공유
 
-### 방화벽과 NAT 트래버셜
+### WebRTC(API)는 어떻게 작동?
 
-일반적인 컴퓨터에는 공인 IP가 할당되어 있지 않다. 그 원인으로는 방화벽(Firewall), 여러 대의 컴퓨터가 하나의 공인 IP를 공유하는 NAT, 유휴 상태의 IP를 일시적으로 임대받는 DHCP 때문이다. 이 때문에 단순히 공인 IP만을 알아낸다고 해서, 특정한 사용자를 가리킬 수는 없다. 공인 IP 뿐만 아니라 해당 네트워크에 연결된 사설 IP 주소까지 알아내야 특정한 사용자를 지정할 수 있게 된다.
+- MediaStream(getUserMedia) - 사용자의 카메라/마이크 등 데이터 스트림 접근
+- RTCPeerConnection - user들 간에 audio, video 스트리밍
+- RTCDataChannel - user들 간에 data 스트리밍
 
-일반적으로는 라우터가 NAT 역할을한다. 외부에서 접근하는 공인 IP와 포트 번호를 확인하여 현재 네트워크 내의 사설 IP들을 적절히 매핑시켜준다. 그러니까 어떤 브라우저 두 개가 서로 직접 통신하려면 각자 현재 연결된 라우터의 공인 IP 주소와 포트를 먼저 알아내야 한다.
+`MediaStream`으로 peer(WebRTC의 Client)의 스트림을 얻고,
+`RTCPeerConnection`으로 연결하고자 하는 peer의 정보를 주고 받아 연결된다.
+이 과정을 `Signaling`이라고 한다.
 
-하지만 어떤 라우터들은 특정 주소나 포트와의 연결을 차단하는 방화벽 설정이 되어 있을 수도 있다. 이처럼 **라우터를 통과해서 연결할 방법을 찾는 과정을 NAT 트래버셜(NAT traversal)이라고 한다.**
+simple peer 라이브러리
 
-### STUN, TURN
+#### MediaStream(getUserMedia)
 
-![image-20220114150749781](C:\Users\SSAFY\AppData\Roaming\Typora\typora-user-images\image-20220114150749781.png)
+사용자의 카메라와 마이크 같은 곳의 데이터 스트림에 접근한다.
 
-이 NAT 트래버셜 작업은 **STUN(Session Traversal Utilities for NAT)** 서버에 의해 이루어진다. STUN 방식은 **단말이 자신의 공인 IP 주소와 포트를 확인하는 과정에 대한 프로토콜**이다. 즉, STUN 서버는 인터넷의 복잡한 주소들 속에서 유일하게 자기 자신을 식별할 수 있는 정보를 반환해준다. 즉, WebRTC 연결을 시작하기 전에 STUN 서버를 향해 요청을 보내면, STUN 서버는 NAT 뒤에 있는 Peer들이 서로 연결할 수 있도록 공인 IP와 포트를 찾아준다.
+navigator.mediaDevices.getUserMedia()에서 생성된 입력과 video 태그 또는 RTCPeerConnection으로 넘겨주는 출력을 갖는다.
 
-쉽게 말해서 다른 사람이 우리 집에 쉽게 찾아올 수 있도록 사전에 우리 집 주소를 조회해서 알아내는 것과 같다. 만약 두 개의 장치가 성공적으로 STUN 서버에서 자기 자신의 주소를 알아냈을 경우에는 P2P 연결을 시도할 두 개의 고유한 주소가 생긴 셈이다.
+navigator.mediaDevices.getUserMedia()가 받는 3개의 매개변수
 
-하지만 STUN 서버를 이용하더라도 항상 자신의 정보를 알아낼 수 있는 것은 아니다. 어떤 라우터들은 방화벽 정책을 달리 할 수도 있고, 이전에 연결된 적이 있는 네트워크만 연결할 수 있게 제한을 걸기도 한다.(Symmetric NAT) 이때문에 STUN 서버를 통해 자기 자신의 주소를 찾아내지 못했을 경우, TURN (Traversal Using Relay NAT) 서버를 대안으로 이용하게 된다.
+* 제약 오브젝트(video 사용 여부(또는 해상도), audio 사용 여부 등)
+* 성공 시 콜백(MediaStream)
+* 실패 시 콜백(error)
 
-TURN 방식은 **네트워크 미디어를 중개하는 서버**를 이용하는 것이다. TURN 방식은 중간에 서버를 한 번 거치기 때문에 엄밀히 이야기하자면 P2P 통신이 아니게 되며 그 구조상 지연이 필연적으로 발생하게 된다. 하지만 보안 정책이 엄격한 개인 NAT 내부에 위치한 브라우저와 P2P 통신을 할 수 있는 유일한 방법이기 때문에, TURN 방식은 최후의 수단으로 선택되어야 한다.
+**getUserMedia()는 반드시 로컬 파일 시스템이 아닌 서버에서 사용되어야 하며, 이외의 경우에는 PERMISSION_DENIED: 1 에러가 발생한다.**
 
-**webRTC는 P2P 통신을 가능하게 합니다. 그러기 위해선 다음과 같은 서버를 필요로 합니다.**
+#### RTCPeerConnection
 
-* 시그널링(Signaling)이라 불리는, 클라이언트들의 통신을 조정하기 위한 메타데이터의 교환 서버
-* 네트워크 주소 변환기(NAT) 및 방화벽 대응을 위한 서버
-
-webRTC 는 다음 세 가지 API를 구현한다.
-
-* MediaStream(라고도 함 getUserMedia)
-* RTCPeerConnection
-* RTCDataChannel
-
-API는 다음 두 가지 사양으로 정의된다.
-
-* WebRTC
-* getUserMedia
-
-
+암호화 및 대역폭 관리를 하는 기능을 가지고 있고, 오디오 또는 비디오 연결을 한다. Peer들 간의 데이터를 안정적이고 효율적으로 통신하게 처리하는 WebRTC 컴포넌트이다.
 
