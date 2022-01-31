@@ -103,3 +103,22 @@ document.getElementById('버튼').addEventListener('click', function(e){
 
 지금 addEventListenter 부착된 HTML 요소를 뜻한다
 
+
+
+#### arrow function을 쓰면 내부에서 this값을 쓸 때 밖에 있던 this값을 그대로 사용한다
+
+```js
+var 오브젝트1 = {
+    함수 : function(){ console.log(this) }
+}
+오브젝트1.함수();
+// 오브젝트1이 출력된다
+
+var 오브젝트2 = {
+    함수 : () => { console.log(this) }
+}
+오브젝트2.함수();
+// window가 출력된다
+```
+
+this 값을 함수를 만나면 항상 변하는데 arrow function 안에서는 변하지 않고 밖에 있던 this를 그대로 쓴다.
