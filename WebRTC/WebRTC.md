@@ -56,3 +56,4 @@ navigator.mediaDevices.getUserMedia()가 받는 3개의 매개변수
 
 암호화 및 대역폭 관리를 하는 기능을 가지고 있고, 오디오 또는 비디오 연결을 한다. Peer들 간의 데이터를 안정적이고 효율적으로 통신하게 처리하는 WebRTC 컴포넌트이다.
 
+![KakaoTalk_20220129_233318651](https://user-images.githubusercontent.com/60650518/152140324-b90ae12d-4303-450f-aab3-395e93e12a5c.jpg)
