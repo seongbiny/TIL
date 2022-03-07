@@ -5,7 +5,7 @@
 * 프로세스와 스레드
 * 싱글 스레드와 멀티 스레드
 * HTTP / HTTPS
-* 쿠키 vs 세션
+* [쿠키 vs 세션](https://github.com/seongbiny/TIL/blob/master/CS/frontend/%EC%BF%A0%ED%82%A4%20vs%20%EC%84%B8%EC%85%98.md)
 * CORS
 * 애자일 방법론
 * CI CD
